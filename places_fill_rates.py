@@ -28,7 +28,7 @@ fill_rates_df.rename(columns={"country": "Country", "iso_country_code": "ISO Cou
 fill_rates_df_styled = fill_rates_df.style.apply(lambda x: ['background-color: #D7E8ED' if i % 2 == 0 else '' for i in range(len(x))], axis=0)
 
 st.write("Fill Rates")
-st.dataframe(fill_rates_df_styled)
+st.dataframe(fill_rates_df_styled, hide_index=True)
 
 
 hide_streamlit_style = """
