@@ -13,8 +13,13 @@ st.set_page_config(
 )
 #### Fill Rates ####
 
-columns_to_keep = ["country", "iso_country_code", "placekey", "parent_placekey", "location_name", "safegraph_brand_ids", "brands", "store_id", "naics_code", "top_category", "sub_category", "latitude", "longitude", "street_address", "city", "region", "postal_code", "phone_number", "open_hours", "category_tags", "open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with website"]
-columns_to_convert = ["placekey", "parent_placekey", "location_name", "safegraph_brand_ids", "brands", "store_id", "naics_code", "top_category", "sub_category", "latitude", "longitude", "street_address", "city", "region", "postal_code", "phone_number", "open_hours", "category_tags", "open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with website"]
+columns_to_keep = ["country", "iso_country_code", "placekey", "parent_placekey",\
+                   "location_name", "safegraph_brand_ids", "brands", "store_id", "naics_code", "top_category", \
+                   "sub_category", "latitude", "longitude", "street_address", "city", "region", "postal_code", "phone_number", \
+                   "open_hours", "category_tags", "open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with domains","Pct with website"]
+columns_to_convert = ["placekey", "parent_placekey", "location_name", "safegraph_brand_ids", "brands", "store_id", "naics_code", \
+                      "top_category", "sub_category", "latitude", "longitude", "street_address", "city", "region", "postal_code", "phone_number",\
+                      "open_hours", "category_tags", "open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with domains","Pct with website"]
 fill_rates_df = read_from_gsheets("Countries")[columns_to_keep]
 
 for column in columns_to_convert:
@@ -23,7 +28,7 @@ for column in columns_to_convert:
     fill_rates_df[column] *= 100
     fill_rates_df[column] = fill_rates_df[column].map("{:.0f}%".format)
 
-fill_rates_df.rename(columns={"country": "Country", "iso_country_code": "ISO Country Code", "Pct with website": "websites"}, inplace=True)
+fill_rates_df.rename(columns={"country": "Country", "iso_country_code": "ISO Country Code","Pct with domains": "domains" ,"Pct with website": "website"}, inplace=True)
 
 fill_rates_df_styled = fill_rates_df.style.apply(lambda x: ['background-color: #D7E8ED' if i % 2 == 0 else '' for i in range(len(x))], axis=0)
 
