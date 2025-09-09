@@ -22,7 +22,7 @@ columns_to_convert = ["placekey", "parent_placekey", "location_name", "safegraph
                       "open_hours", "category_tags", "Pct with mcc","open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with domains","Pct with website", "Pct with booking links", "Pct with aliases"]
 fill_rates_df = read_from_gsheets("Countries")[columns_to_keep]
 
-or column in columns_to_convert:
+for column in columns_to_convert:
     if fill_rates_df[column].dtype == object:
         fill_rates_df[column] = pd.to_numeric(
             fill_rates_df[column].str.replace(",", "").str.replace("%", ""),
