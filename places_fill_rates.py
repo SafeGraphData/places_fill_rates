@@ -22,12 +22,25 @@ columns_to_convert = ["placekey", "parent_placekey", "location_name", "safegraph
                       "open_hours", "category_tags", "Pct with mcc","open_on", "closed_on", "tracking_closed_since", "geometry_type", "Pct with domains","Pct with website", "Pct with booking links", "Pct with aliases"]
 fill_rates_df = read_from_gsheets("Countries")[columns_to_keep]
 
-for column in columns_to_convert:
+or column in columns_to_convert:
     if fill_rates_df[column].dtype == object:
-        fill_rates_df[column] = pd.to_numeric(fill_rates_df[column].str.replace(",", "").str.replace("%", ""), errors="coerce")
-    fill_rates_df[column] *= 100
+        fill_rates_df[column] = pd.to_numeric(
+            fill_rates_df[column].str.replace(",", "").str.replace("%", ""),
+            errors="coerce"
+        )
+    fill_rates_df[column] *= 100  # convert to percent values
+
+    
+    fill_rates_df.loc[
+        (fill_rates_df[column] > 0) & (fill_rates_df[column] < 0.5),
+        column
+    ] = -1
+
+    
     fill_rates_df[column] = fill_rates_df[column].map("{:.0f}%".format)
-    fill_rates_df[column] = fill_rates_df[column].replace("0%", "<1%")
+
+    
+    fill_rates_df[column] = fill_rates_df[column].replace("-1%", "<1%")
 
 fill_rates_df.rename(columns={"country": "Country", "iso_country_code": "ISO Country Code",\
                               "Pct with domains": "domains" ,"Pct with website": "website", "Pct with booking links":"booking_link", "Pct with mcc":"mcc", "Pct with aliases":"name_aliases"}, inplace=True)
